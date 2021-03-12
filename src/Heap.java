@@ -1,28 +1,28 @@
-public class Heap<Comparable> {
-    private Comparable[] heapVector;
+import java.util.ArrayList;
 
-    private void percolateUp(final Comparable item) {
-        // percolating up
-    }
-
-    private void percolateDown() {
-        // percolating down
-    }
+public class Heap {
+    private ArrayList<Integer> heapVector;
 
     public Heap() {
-        // default constructor
+        heapVector = new ArrayList<>();
     }
 
     public Heap(final Heap otherHeap) {
-        // may implement either copy constructor or copy assignment
+        heapVector = new ArrayList<>();
+
+        for (int i = 0; i < otherHeap.size(); i ++) {
+            heapVector.set(i, otherHeap.getElement(i));
+        }
     }
 
-    public void assignCopy(Heap otherHeap) {
-        // may implement either copy constructor or copy assignment
-    }
+    public void insert(final Integer element) {
+        // if (heapVector.size() - 1 >= size()) {
 
-    public void insert(final Comparable element) {
-        // calls percolateUp()
+        // }
+
+        int newPos = percolateUp(element);
+
+        heapVector.add(newPos, element);
     }
 
     public void deleteMin() {
@@ -30,11 +30,24 @@ public class Heap<Comparable> {
     }
 
     public int size() {
-        // heap size
-        return -1;
+        return heapVector.size();
     }
 
-    public final Comparable getElement(final int index) {
-        return null;
+    public final Integer getElement(final int index) {
+        return heapVector.get(index);
+    }
+
+    private int percolateUp(final Integer item) {
+        int hole = size();
+
+        while (hole > 1 && item < getElement(hole / 2)) {
+            heapVector.set(hole, getElement(hole / 2));
+            hole /= 2;
+        }
+        return hole;
+    }
+
+    private void percolateDown() {
+        // percolating down
     }
 }

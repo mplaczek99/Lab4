@@ -7,7 +7,7 @@ public class Driver {
     ArrayList<Integer> inputData; // all keys from the input file
 
     // Print data and heap
-    public void printHeap(final String description, final Heap<Integer> heap) {
+    public void printHeap(final String description, final Heap heap) {
         System.out.print(description + "\n");
         System.out.print("[" + heap.size() + "]");
 
@@ -18,17 +18,17 @@ public class Driver {
     }
 
     // Consider heap elements ordered if first <= second or second is beyond heap size
-    public boolean areHeapElementsOrdered(final Heap<Integer> heap, final int i, final int j) {
-        return i >= heap.size() || j >= heap.size() || heap.getElement(i) <= heap.getElement(j); // Edit this line
+    public boolean areHeapElementsOrdered(final Heap heap, final int i, final int j) {
+        return i >= heap.size() || j >= heap.size() || heap.getElement(i) <= heap.getElement(j); // Edit this line | Error here?
     }
 
     // Returns stringized element or "none" if beyond heap size
-    public String heapElement(final Heap<Integer> heap, final int i) {
+    public String heapElement(final Heap heap, final int i) {
         return i < heap.size() ? heap.getElement(i).toString() : "none";
     }
 
     // Check that it is really a heap, throw an exception otherwise
-    public void checkHeap(final Heap<Integer> heap) {
+    public void checkHeap(final Heap heap) {
         for (int i = 0; i < heap.size(); i++) {
             if (areHeapElementsOrdered(heap, i, i * 2 + 1) && areHeapElementsOrdered(heap, i, i * 2 + 2)) {
                 continue;
@@ -43,17 +43,15 @@ public class Driver {
     }
 
     // Insert one element, check, and print
-    public void insertOne(final Heap<Integer> heap, int element) {
+    public void insertOne(final Heap heap, int element) {
         System.out.print("Insert " + element + "\n");
 
         heap.insert(element);
         checkHeap(heap);
-
-        printHeap("Heap after insert " + element, heap);
     }
 
     // Delete minimum element, check, and print
-    public void deleteOne(final Heap<Integer> heap) {
+    public void deleteOne(final Heap heap) {
         System.out.print("Delete " + heap.getElement(0) + "\n");
 
         heap.deleteMin();
@@ -65,9 +63,9 @@ public class Driver {
     // - insert 31 and 14
     // - delete all min elements
     public void testData() {
-        Heap<Integer> heap = null; // = null?
+        Heap heap = new Heap();
 
-        for (int key : inputData) {
+        for (Integer key : inputData) {
             heap.insert(key);
             checkHeap(heap);
         }
@@ -90,13 +88,16 @@ public class Driver {
         Scanner fin = new Scanner(new File(inputFile));
         Integer key;
 
-        System.out.print("Input data");
-        while (fin.hasNextInt()) {
+        inputData = new ArrayList<>();
+
+        System.out.println("Input data");
+
+        while (fin.hasNext()) {
             key = fin.nextInt();
 
             inputData.add(key);
-            System.out.print(key);
         }
+        System.out.println(inputData);
         System.out.print("\n");
 
         fin.close();
@@ -104,27 +105,31 @@ public class Driver {
 
     // Test the input file, print result to the output file
     public void testFile(final String inputFile, final String outputFile) throws IOException {
-        PrintStream original = new PrintStream(System.out);
-        fout = new FileOutputStream(outputFile);
-        PrintStream ps = new PrintStream(fout);
+        // PrintStream original = new PrintStream(System.out);
+        // fout = new FileOutputStream(outputFile);
+        // PrintStream ps = new PrintStream(fout);
+
+        // System.setOut(ps);
 
         readData(inputFile);
+        testData();
 
-        fout.close();
+        // fout.close();
     }
 
-    public Driver() {
+    public Driver(int index) {
         try {
-           for (int i = 1; i <= 4; i ++) {
-               final String suffix = i + ".txt";
-               testFile("in" + suffix, "out" + suffix);
-           }
+            final String suffix = index + ".txt";
+            testFile("src/in" + suffix, "src/out" + suffix);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        new Driver();
+        new Driver(1);
+        // new Driver(2);
+        // new Driver(3);
+        // new Driver(4);
     }
 }
